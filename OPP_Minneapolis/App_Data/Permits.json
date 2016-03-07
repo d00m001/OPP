@@ -1,0 +1,67 @@
+{
+    "PermitList":[
+        {
+            "PermitType":0,
+            "Name":"Plaza",
+            "PDFLink":"PlazaPermit.pdf",
+            "QuestionList":[
+                {
+                    "QuestionText":"Will alcohol be served?",
+                    "YesNoQuestion":true,
+                    "YesNoAnswer":false,
+                    "AnswerText":null,
+                    "AdditionalPermitPDF":"AlcoholPermit.pdf"
+                },
+                {
+                    "QuestionText":"Will Food be served?",
+                    "YesNoQuestion":true,
+                    "YesNoAnswer":false,
+                    "AnswerText":null,
+                    "AdditionalPermitPDF":"FoodPermit.pdf"
+                }
+            ]
+        },
+        {
+            "PermitType":3,
+            "Name":"Block",
+            "PDFLink":"BlockPermit.pdf",
+            "QuestionList":[
+                {
+                    "QuestionText":"Will alcohol be served?",
+                    "YesNoQuestion":true,
+                    "YesNoAnswer":false,
+                    "AnswerText":null,
+                    "AdditionalPermitPDF":"AlcoholPermit.pdf"
+                },
+                {
+                    "QuestionText":"Will Food be served?",
+                    "YesNoQuestion":true,
+                    "YesNoAnswer":false,
+                    "AnswerText":null,
+                    "AdditionalPermitPDF":"FoodPermit.pdf"
+                }
+            ]
+        },
+        {
+            "PermitType":2,
+            "Name":"Parade",
+            "PDFLink":"ParadePermitFillable.html",
+            "QuestionList":[
+                {
+                    "QuestionText":"Will alcohol be served?",
+                    "YesNoQuestion":true,
+                    "YesNoAnswer":false,
+                    "AnswerText":null,
+                    "AdditionalPermitPDF":"AlcoholPermit.pdf"
+                },
+                {
+                    "QuestionText":"Will Food be served?",
+                    "YesNoQuestion":true,
+                    "YesNoAnswer":false,
+                    "AnswerText":null,
+                    "AdditionalPermitPDF":"FoodPermit.pdf"
+                }
+            ]
+        }
+    ]
+}

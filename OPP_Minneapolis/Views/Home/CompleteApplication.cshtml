@@ -1,0 +1,25 @@
+﻿@{
+  ViewBag.Title = "Complete Application";
+}
+
+<h2>Upload Application Documents</h2>
+
+@using (Html.BeginForm())
+{
+  <label>Select Application PDF</label>
+  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+    <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+    <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" id="applicationFile" name="ApplicationFile"></span>
+    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+  </div>
+
+  <label>Select Map PDF</label>
+  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+    <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+    <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" id="mapFile" name="MapFile"></span>
+    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+  </div>
+
+  <input type="submit" value="Complete Application" class="btn btn-default" />
+}
+

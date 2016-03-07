@@ -1,0 +1,241 @@
+﻿@{
+    ViewBag.Title = "Find Permit";
+}
+
+<link rel="stylesheet" href="http://openlayers.org/en/v3.14.2/css/ol.css" type="text/css">
+<script src="http://openlayers.org/en/v3.14.2/build/ol.js"></script>
+<script type="text/javascript">
+
+  function RefreshPermits(PermitTypes) {
+    $.ajax({
+      async: false,
+      cache: false,
+      url: '/Home/RefreshPermitList/' + PermitTypes
+    }).success(function (partialView) {
+      $('#permitList').replaceWith(partialView);
+    });
+  }
+
+  $(document).ready(function () {
+    RefreshPermits();
+  });
+
+  function RefreshBasedOnCheck()
+  {
+    var permitTypeList = "";
+    if ($("#chkBusinessType").is(':checked')) {
+      permitTypeList += "Business";
+    }
+
+    if ($("#chkOrganizationType").is(':checked')) {
+      if (permitTypeList.length > 0) {
+        permitTypeList += "|";
+      }
+      permitTypeList += "Organization";
+    }
+
+    if ($("#chkContractorType").is(':checked')) {
+      if (permitTypeList.length > 0) {
+        permitTypeList += "|";
+      }
+      permitTypeList += "Contractor";
+    }
+
+    if ($("#chkResidentialType").is(':checked')) {
+      if (permitTypeList.length > 0) {
+        permitTypeList += "|";
+      }
+      permitTypeList += "Residential";
+    }
+
+    if (permitTypeList.length == 0) { permitTypeList = "|";}
+
+    RefreshPermits(permitTypeList);    
+  }
+</script>
+
+<div class="table">
+  <div class="row">
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+      <h2>Find A Permit</h2>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" style="vertical-align:bottom">
+      <center><h3>Use Types to Help Filter List of Available Permits</h3></center>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <input type="checkbox" id="chkBusinessType" onchange="RefreshBasedOnCheck()" value="Business" checked="checked" />
+        <label for="chkBusinessType">Business</label>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <input type="checkbox" id="chkOrganizationType" onchange="RefreshBasedOnCheck()" value="Organization" checked="checked" />
+        <label for="chkOrganizationType">Organization</label>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <input type="checkbox" id="chkContractorType" onchange="RefreshBasedOnCheck()" value="Contractor" checked="checked" />
+        <label for="chkContractorType">Contractor</label>
+      </div>
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <input type="checkbox" id="chkResidentialType" onchange="RefreshBasedOnCheck()" value="Residential" checked="checked" />
+        <label for="chkResidentialType">Residential</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div id="permitList" class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
+    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+      <div id="map" class="map"></div>
+      <script>
+        var image = new ol.style.Circle({
+          radius: 5,
+          fill: null,
+          stroke: new ol.style.Stroke({ color: 'red', width: 1 })
+        });
+
+        var styles = {
+          'Point': new ol.style.Style({
+            image: image
+          }),
+          'LineString': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'green',
+              width: 1
+            })
+          }),
+          'MultiLineString': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'green',
+              width: 1
+            })
+          }),
+          'MultiPoint': new ol.style.Style({
+            image: image
+          }),
+          'MultiPolygon': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'yellow',
+              width: 1
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(255, 255, 0, 0.1)'
+            })
+          }),
+          'Polygon': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'blue',
+              lineDash: [4],
+              width: 3
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(0, 0, 255, 0.1)'
+            })
+          }),
+          'GeometryCollection': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'magenta',
+              width: 2
+            }),
+            fill: new ol.style.Fill({
+              color: 'magenta'
+            }),
+            image: new ol.style.Circle({
+              radius: 10,
+              fill: null,
+              stroke: new ol.style.Stroke({
+                color: 'magenta'
+              })
+            })
+          }),
+          'Circle': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+              color: 'red',
+              width: 2
+            }),
+            fill: new ol.style.Fill({
+              color: 'rgba(255,0,0,0.2)'
+            })
+          })
+        };
+
+        var styleFunction = function (feature) {
+          return styles[feature.getGeometry().getType()];
+        };
+
+        var geojsonObject = {
+          'type': 'FeatureCollection',
+          'crs': {
+            'type': 'name',
+            'properties': {
+              'name': 'EPSG:3857'
+            }
+          },
+          'features': []
+        };
+
+        var vectorSource = new ol.source.Vector({
+          features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+        });
+
+        var minneapolisLonLat = [-93.27357, 44.97589];
+        var minneapolisWebMercator = ol.proj.fromLonLat(minneapolisLonLat);
+
+        var vectorLayer = new ol.layer.Vector({
+          source: vectorSource,
+          style: styleFunction
+        });
+
+        var map = new ol.Map({
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            }),
+            vectorLayer
+          ],
+          target: 'map',
+          controls: ol.control.defaults({
+            attributionOptions: ({
+              collapsible: false
+            })
+          }),
+          view: new ol.View({
+            center: minneapolisWebMercator,
+            zoom: 12
+          })
+        });
+
+        map.getView().on('change:resolution', function () {
+          var permitTypes = "";
+          var types = Math.floor((Math.random() * 5));
+
+          if (types >= 0) {
+            permitTypes += "Business";
+          }
+
+          if (types >= 1) {
+            if (permitTypes.length > 0) {
+              permitTypes += "|";
+            }
+            permitTypes += "Organization";
+          }
+
+          if (types >= 2) {
+            if (permitTypes.length > 0) {
+              permitTypes += "|";
+            }
+            permitTypes += "Contractor";
+          }
+
+          if (types >= 0) {
+            if (permitTypes.length > 0) {
+              permitTypes += "|";
+            }
+            permitTypes += "Residential";
+          }
+
+          RefreshPermits("Residential");
+        });
+
+      </script>
+    </div>
+  </div>
+
+  
+</div>

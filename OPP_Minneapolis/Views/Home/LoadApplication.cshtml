@@ -1,0 +1,11 @@
+﻿<h2>@ViewBag.ApplicationName Permit</h2>
+
+@using (Html.BeginForm())
+{
+  <input type="submit" value="Next" class="btn btn-default" />
+}
+<div id="pdf">
+  <object width="1000" height="600" type="application/pdf" data="@ViewBag.PDF" id="pdf_content">
+    <p>PDF cannot be displayed within your Browser, <a href="@ViewBag.PDF" target="_blank">Download the application</a></p>
+  </object>
+</div>

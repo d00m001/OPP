@@ -1,0 +1,16 @@
+﻿@using OPP_Minneapolis.Models;
+@model OPP_Minneapolis.Models.Permits
+
+<div id="permitList" class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+  <h3><u>Permits</u></h3>
+  <table class="table">
+    @foreach (var item in Model)
+    {
+      <tr>
+        <td>
+          <a href="\Home\LoadApplication\@Html.Raw(item.Name)">@Html.Raw(item.Name)</a>
+        </td>
+      </tr>
+    }
+  </table>
+</div>

@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Draw Map";
+}
+
+<h2>Draw Map</h2>
+
+<label>Make sure to Save your Map as a PDF. You will upload all files in the next step.</label>
+@using (Html.BeginForm())
+{
+  <input type="submit" value="Complete Application" class="btn btn-default" />
+}
+<iframe src="https://gis.hennepin.us/Property/map/default.aspx?C=479436.69754889514,4975510.064812463&L=2&T=road&D=true&IMG=&VIS=0,0,0,0,0,0,0,0,0,0,0,0" style="width:1200px;height:600px" />
+
