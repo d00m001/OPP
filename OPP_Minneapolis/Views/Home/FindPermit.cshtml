@@ -52,6 +52,28 @@
 
     RefreshPermits(permitTypeList);    
   }
+
+  function wrapLon(value) {
+    var worlds = Math.floor((value + 180) / 360);
+    return value - (worlds * 360);
+  }
+
+  function onMoveEnd(evt) {
+    var map = evt.map;
+    var extent = map.getView().calculateExtent(map.getSize());
+    var bottomLeft = ol.proj.transform(ol.extent.getBottomLeft(extent),'EPSG:3857', 'EPSG:4326');
+    var topRight = ol.proj.transform(ol.extent.getTopRight(extent), 'EPSG:3857', 'EPSG:4326');
+    var left = 0;
+    var bottom = 0;
+    var right = 0;
+    var top = 0
+    left = wrapLon(bottomLeft[0]);
+    bottom = wrapLon(bottomLeft[1]);
+    right = wrapLon(topRight[0]);
+    top = wrapLon(topRight[1]);
+    alert("Map Extents: " + left.toString() + " " + bottom.toString()  + " " + right.toString() + " " + top.toString());
+  }
+
 </script>
 
 <div class="table">
@@ -201,6 +223,8 @@
           })
         });
 
+        map.on('moveend', onMoveEnd);
+
         map.getView().on('change:resolution', function () {
           var permitTypes = "";
           var types = Math.floor((Math.random() * 4));
@@ -232,6 +256,42 @@
 
           RefreshPermits(permitTypes);
         });
+
+        var positionFeature = new ol.Feature();
+        positionFeature.setStyle(new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 6,
+            fill: new ol.style.Fill({
+              color: '#3399CC'
+            }),
+            stroke: new ol.style.Stroke({
+              color: '#fff',
+              width: 2
+            })
+          })
+        }));
+
+        new ol.layer.Vector({
+          map: map,
+          source: new ol.source.Vector({
+            features: [positionFeature]
+          })
+        });
+
+        var geolocation = new ol.Geolocation({
+          // take the projection to use from the map's view
+          projection: map.getView().getProjection()
+        });
+
+        geolocation.on('change:position', function () {
+          var coordinates = geolocation.getPosition();
+          if (coordinates != null) {
+            positionFeature.setGeometry(new ol.geom.Point(coordinates));
+            map.getView().setCenter(coordinates);
+          }
+        });
+
+        geolocation.setTracking(true);
 
       </script>
     </div>
