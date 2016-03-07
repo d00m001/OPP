@@ -3,6 +3,29 @@
 }
 
 <link rel="stylesheet" href="http://openlayers.org/en/v3.14.2/css/ol.css" type="text/css">
+@*For Supporting Full Screen Mapping*@
+<style>
+  .map:-moz-full-screen {
+    height: 100%;
+  }
+
+  .map:-webkit-full-screen {
+    height: 100%;
+  }
+
+  .map:-ms-fullscreen {
+    height: 100%;
+  }
+
+  .map:fullscreen {
+    height: 100%;
+  }
+
+  .ol-rotate {
+    top: 3em;
+  }
+</style>
+
 <script src="http://openlayers.org/en/v3.14.2/build/ol.js"></script>
 <script type="text/javascript">
 
@@ -71,7 +94,7 @@
     bottom = wrapLon(bottomLeft[1]);
     right = wrapLon(topRight[0]);
     top = wrapLon(topRight[1]);
-    alert("Map Extents: " + left.toString() + " " + bottom.toString()  + " " + right.toString() + " " + top.toString());
+    //alert("Map Extents: " + left.toString() + " " + bottom.toString()  + " " + right.toString() + " " + top.toString());
   }
 
 </script>
@@ -205,18 +228,16 @@
         });
 
         var map = new ol.Map({
+          controls: ol.control.defaults().extend([
+            new ol.control.FullScreen()
+          ]),
           layers: [
             new ol.layer.Tile({
               source: new ol.source.OSM()
             }),
             vectorLayer
           ],
-          target: 'map',
-          controls: ol.control.defaults({
-            attributionOptions: ({
-              collapsible: false
-            })
-          }),
+          target: 'map',          
           view: new ol.View({
             center: minneapolisWebMercator,
             zoom: 12
