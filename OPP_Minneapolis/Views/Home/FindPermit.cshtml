@@ -203,7 +203,7 @@
 
         map.getView().on('change:resolution', function () {
           var permitTypes = "";
-          var types = Math.floor((Math.random() * 5));
+          var types = Math.floor((Math.random() * 4));
 
           if (types >= 0) {
             permitTypes += "Business";
@@ -223,14 +223,14 @@
             permitTypes += "Contractor";
           }
 
-          if (types >= 0) {
+          if (types >= 3) {
             if (permitTypes.length > 0) {
               permitTypes += "|";
             }
             permitTypes += "Residential";
           }
 
-          RefreshPermits("Residential");
+          RefreshPermits(permitTypes);
         });
 
       </script>

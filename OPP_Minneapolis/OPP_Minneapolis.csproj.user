@@ -17,8 +17,8 @@
           <StartAction>CurrentPage</StartAction>
           <AspNetDebugging>True</AspNetDebugging>
           <SilverlightDebugging>False</SilverlightDebugging>
-          <NativeDebugging>False</NativeDebugging>
-          <SQLDebugging>False</SQLDebugging>
+          <NativeDebugging>True</NativeDebugging>
+          <SQLDebugging>True</SQLDebugging>
           <ExternalProgram>
           </ExternalProgram>
           <StartExternalURL>
@@ -27,7 +27,7 @@
           </StartCmdLineArguments>
           <StartWorkingDirectory>
           </StartWorkingDirectory>
-          <EnableENC>True</EnableENC>
+          <EnableENC>False</EnableENC>
           <AlwaysStartWebServerOnDebug>True</AlwaysStartWebServerOnDebug>
         </WebProjectProperties>
       </FlavorProperties>
