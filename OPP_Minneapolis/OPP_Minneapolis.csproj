@@ -173,7 +173,6 @@
     <Content Include="App_Data\Permits.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\permit_image.png" />
     <Content Include="Images\zoom-in.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
